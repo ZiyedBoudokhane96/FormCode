@@ -1,0 +1,149 @@
+import { Selector, t } from 'testcafe';
+
+fixture`JSFiddle Test`
+  .page`https://jsfiddle.net/`;
+
+test('Complete JSFiddle Test', async (t) => {
+ 
+  await t.navigateTo('https://jsfiddle.net/');
+
+  await t.maximizeWindow();
+
+  // Step 1: Click on the HTML panel
+  const htmlPanelSelector = Selector('#editor > div.panel-v.left > div:nth-child(1) > div.CodeMirror.cm-s-default.CodeMirror-wrap.fontSize_1'); 
+  await t.click(htmlPanelSelector);
+
+  // Step 2: Wait for 3 seconds
+  await t.wait(3000);
+
+  // Step 3: Paste HTML code in the panel
+  const htmlCode = `<!DOCTYPE html>
+  <html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <link rel="form_css" href="styles.css">
+    <title>Simple Form</title>
+  </head>
+  <body>
+    <h1>Simple Form</h1>
+    <form>
+      <label for="firstName">First Name:</label>
+      <input type="text" id="firstName" name="firstName" required><br><br>
+  
+      <label for="lastName">Last Name:</label>
+      <input type="text" id="lastName" name="lastName" required><br><br>
+  
+      <label for="company">Company:</label>
+      <input type="text" id="company" name="company"><br><br>
+  
+      <label for="email">Email Address:</label>
+      <input type="email" id="email" name="email" required><br><br>
+  
+      <label for="phone">Phone Number:</label>
+      <input type="tel" id="phone" name="phone"><br><br>
+  
+      <button type="submit">Submit</button>
+    </form>
+  </body>
+  </html>`;
+
+  await t.typeText(htmlPanelSelector, htmlCode, { paste: true });
+
+  // Step 4: Click on the CSS panel
+  const cssPanelSelector = Selector('#editor > div.panel-v.right > div:nth-child(1) > div.CodeMirror.cm-s-default.CodeMirror-wrap.fontSize_1');
+  await t.click(cssPanelSelector);
+
+  // Step 5: Wait for 3 seconds
+  await t.wait(3000);
+
+  // Step 6: Paste CSS code in the panel
+  const cssCode = `body {
+    font-family: 'Montserrat', sans-serif;
+    background-color: #0645AD;
+    color: #fff;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    flex-direction: column; 
+  }
+  
+  form {
+    background-color: #0A78E3;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);
+    width: 300px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  label {
+    display: block;
+    margin-bottom: 6px;
+    font-weight: bold;
+    text-align: left;
+  }
+  
+  input[type="text"],
+  input[type="email"],
+  input[type="tel"] {
+    width: 100%;
+    padding: 8px;
+    border: none;
+    background-color: #C0D6E4;
+    border-radius: 6px;
+    margin-bottom: 10px;
+  }
+  
+  button[type="submit"] {
+    background-color: #32C0CC;
+    color: #fff;
+    padding: 8px 16px;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+    margin-bottom: 5px;
+  }
+  
+  button[type="submit"]:hover {
+    background-color: #2A9BAB;
+  }`;
+
+  await t.typeText(cssPanelSelector, cssCode, { paste: true });
+
+ 
+  const runButtonSelector = Selector('#run');
+  await t.click(runButtonSelector);
+
+
+  await t.wait(6000);
+
+  const saveButtonSelector = Selector('#actions > nav > div:nth-child(2) > a');
+await t.click(saveButtonSelector);
+
+const confirmButtonSelector = Selector('#save');
+await t.click(confirmButtonSelector);
+  
+await t.eval(() => location.reload(true));
+
+await t.wait(1000);
+
+const iframeSelector = Selector('iframe[name="result"]');
+await t.switchToIframe(iframeSelector);
+
+
+const firstNameInput = Selector('#firstName');
+await t.typeText(firstNameInput, 'Ziyed');
+await t.typeText('#lastName', 'Boudokhane');
+await t.typeText('#company', 'Freelance');
+await t.typeText('#email', '1234567@gmail.com');
+await t.typeText('#phone', '1234567890');
+
+
+await t.wait(3000);
+
+});
